@@ -1,0 +1,14 @@
+{
+    order php_server before file_server
+}
+
+:{$PORT:-80} {
+    root * /app/public
+
+    encode zstd gzip
+
+    php_server
+
+    file_server
+}
+
