@@ -16,8 +16,6 @@ COPY --from=vendor /app/vendor /app/vendor
 
 COPY ./Caddyfile /etc/caddy/Caddyfile
 
-ENV APP_ENV=prod
-
 EXPOSE 80
 
 CMD ["frankenphp", "run", "--config=/etc/caddy/Caddyfile"]
