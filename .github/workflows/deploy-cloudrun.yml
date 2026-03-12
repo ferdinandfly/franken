@@ -1,11 +1,7 @@
 name: Deploy to Cloud Run
 
-on:
-  push:
-    branches:
-      - main
-
 env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
   SERVICE_NAME: franken-php
   REGION: asia-east1
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
