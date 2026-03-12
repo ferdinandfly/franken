@@ -33,6 +33,7 @@ locals {
     "roles/cloudsql.client",
     "roles/serviceusage.serviceUsageConsumer",
     "roles/storage.admin", 
+    "roles/viewer",
   ]
 }
 
