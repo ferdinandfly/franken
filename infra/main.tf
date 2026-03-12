@@ -32,6 +32,7 @@ locals {
     "roles/artifactregistry.writer",
     "roles/cloudsql.client",
     "roles/serviceusage.serviceUsageConsumer",
+    "roles/storage.admin", 
   ]
 }
 
