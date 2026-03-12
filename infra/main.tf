@@ -134,11 +134,19 @@ resource "google_project_service" "artifact_registry" {
   project = var.project_id
   service = "artifactregistry.googleapis.com"
 }
+
 resource "google_project_service" "cloud_build" {
   project = var.project_id
   service = "cloudbuild.googleapis.com"
 }
+
 resource "google_project_service" "sql_admin" {
   project = var.project_id
   service = "sqladmin.googleapis.com"
+}
+
+resource "google_project_iam_member" "github_sa_user" {
+  project = var.project_id
+  role    = "roles/iam.serviceAccountUser"
+  member  = "serviceAccount:${google_service_account.github_deployer.email}"
 }
