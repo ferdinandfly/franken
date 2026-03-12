@@ -38,11 +38,6 @@ jobs:
           IMAGE_REPO: franken-repo
         run: |
           IMAGE="asia-docker.pkg.dev/${PROJECT_ID}/${IMAGE_REPO}/${SERVICE_NAME}:${GITHUB_SHA}"
-          gcloud artifacts repositories create "${IMAGE_REPO}" \
-            --repository-format=DOCKER \
-            --location="${REGION}" \
-            --description="FrankenPHP images for ${SERVICE_NAME}" \
-            --quiet || true
           gcloud builds submit --tag "${IMAGE}" .
           echo "IMAGE=${IMAGE}" >> "$GITHUB_ENV"
 

@@ -31,6 +31,7 @@ locals {
     "roles/cloudbuild.builds.editor",
     "roles/artifactregistry.writer",
     "roles/cloudsql.client",
+    "roles/serviceusage.serviceUsageConsumer",
   ]
 }
 
