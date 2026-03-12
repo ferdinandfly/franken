@@ -151,3 +151,8 @@ resource "google_project_iam_member" "github_sa_user" {
   role    = "roles/iam.serviceAccountUser"
   member  = "serviceAccount:${google_service_account.github_deployer.email}"
 }
+
+resource "google_project_service" "cloud_run" {
+  project = var.project_id
+  service = "run.googleapis.com"
+}
