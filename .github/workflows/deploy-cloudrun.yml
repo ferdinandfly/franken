@@ -1,0 +1,58 @@
+name: Deploy to Cloud Run
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  SERVICE_NAME: franken-php
+  REGION: asia-east1
+  PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT_EMAIL }}
+
+      - name: Set up gcloud
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ env.PROJECT_ID }}
+
+      - name: Build and push image with Cloud Build
+        env:
+          IMAGE_REPO: franken-repo
+        run: |
+          IMAGE="asia-docker.pkg.dev/${PROJECT_ID}/${IMAGE_REPO}/${SERVICE_NAME}:${GITHUB_SHA}"
+          gcloud artifacts repositories create "${IMAGE_REPO}" \
+            --repository-format=DOCKER \
+            --location="${REGION}" \
+            --description="FrankenPHP images for ${SERVICE_NAME}" \
+            --quiet || true
+          gcloud builds submit --tag "${IMAGE}" .
+          echo "IMAGE=${IMAGE}" >> "$GITHUB_ENV"
+
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud run deploy "${SERVICE_NAME}" \
+            --image "${IMAGE}" \
+            --region "${REGION}" \
+            --platform managed \
+            --allow-unauthenticated \
+            --port 80 \
+            --set-env-vars "APP_ENV=prod" \
+            --set-env-vars "DATABASE_URL=${{ secrets.DATABASE_URL }}" \
+            --add-cloudsql-instances="${{ secrets.CLOUD_SQL_INSTANCE }}"
