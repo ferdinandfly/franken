@@ -130,3 +130,15 @@ resource "google_sql_user" "symfony" {
   password = random_password.db_password.result
 }
 
+resource "google_project_service" "artifact_registry" {
+  project = var.project_id
+  service = "artifactregistry.googleapis.com"
+}
+resource "google_project_service" "cloud_build" {
+  project = var.project_id
+  service = "cloudbuild.googleapis.com"
+}
+resource "google_project_service" "sql_admin" {
+  project = var.project_id
+  service = "sqladmin.googleapis.com"
+}
