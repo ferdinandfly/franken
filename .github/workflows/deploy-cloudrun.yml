@@ -37,7 +37,7 @@ jobs:
         env:
           IMAGE_REPO: franken-repo
         run: |
-          IMAGE="asia-docker.pkg.dev/${PROJECT_ID}/${IMAGE_REPO}/${SERVICE_NAME}:${GITHUB_SHA}"
+          IMAGE="${REGION}-docker.pkg.dev/${PROJECT_ID}/${IMAGE_REPO}/${SERVICE_NAME}:${GITHUB_SHA}"
           gcloud builds submit --tag "${IMAGE}" .
           echo "IMAGE=${IMAGE}" >> "$GITHUB_ENV"
 
