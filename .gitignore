@@ -9,7 +9,6 @@
 ###< symfony/framework-bundle ###
 
 # Local environment files (do not commit secrets)
-/.env
 /.env.*
 !/.env.example
 
